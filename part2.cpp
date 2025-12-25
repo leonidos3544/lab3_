@@ -1,5 +1,6 @@
 #include <iostream>
-#include <cstdlib.h>
+#include <cstdlib>
+#include<memory>
 #include <ctime>//rand
 #include "part1.h"
 
@@ -43,8 +44,8 @@ int Mouse::getY() {
 }
 
 int main() {
-    Cat cat(0, 0);
-    Mouse mouse(2, 2);
+    auto ptrc = std::make_shared<Cat>(0,0);
+    auto ptrm = std::make_shared<Mouse>(2,2);
     const int FIELD_SIZE = 5;
     const int MAX_TURNS = 5;
     
@@ -53,7 +54,7 @@ int main() {
     for (int turn = 1; turn <= MAX_TURNS; ++turn) {
         system("clear");
         
-        if (cat == mouse) {
+        if (ptrc->getX() == ptrm->getX() && ptrc->getY() == ptrm->getY()){
             std::cout << "YOU ARE WIN IN TURN " << turn << std::endl;
             return 0;
         }
@@ -63,10 +64,10 @@ int main() {
 
         for (int y=0; y<FIELD_SIZE; ++y) {
             for (int x=0; x<FIELD_SIZE; ++x) {
-                if (cat.getX() == x && cat.getY() == y) {
-                    cat.draw();
-                } else if (mouse.getX()==x && mouse.getY() == y) {
-                    mouse.draw();
+                if (ptrc->getX() == x && ptrc->getY() == y) {
+                    ptrc->draw();
+                } else if (ptrm->getX()==x && ptrm->getY() == y) {
+                    ptrm->draw();
                 } else {
                     std::cout << ".";
                 }
@@ -75,9 +76,14 @@ int main() {
             std::cout << std::endl;
         }
         
-        cat.move();
-        mouse.move();
+        ptrc->move();
+        ptrm->move();
     }
+    
+    system("clear");
+    std::cout << "You are looose, try again." << std::endl;
+    return 0;
+}
     
     system("clear");
     std::cout << "You are looose, try again." << std::endl;
